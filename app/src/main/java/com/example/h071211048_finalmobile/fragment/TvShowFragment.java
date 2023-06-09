@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.h071211048_finalmobile.R;
@@ -30,6 +31,7 @@ public class TvShowFragment extends Fragment {
 
     private RecyclerView rv_tvshow;
     private TextView tv_alert;
+    private ProgressBar progressBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,12 +47,13 @@ public class TvShowFragment extends Fragment {
         rv_tvshow = view.findViewById(R.id.rv_tvshow);
         rv_tvshow.setLayoutManager(new GridLayoutManager(getContext(), 2));
         tv_alert = view.findViewById(R.id.tv_alert);
+        progressBar = view.findViewById(R.id.progress_bar);
 
         consumeAPI();
 
     }
     public void consumeAPI() {
-        tv_alert.setVisibility(View.GONE);
+        showLoading();
         Call<TvShowResponse> client = ApiConfig.getApiService().getTv("top_rated", "b784846a95277f1dc4106ff2519fe987", "en-US", 1);
         client.enqueue(new Callback<TvShowResponse>() {
             @Override
@@ -60,17 +63,36 @@ public class TvShowFragment extends Fragment {
                         List<TvShowResult> tvshowResults = response.body().getTvshowResults();
                         TvShowAdapter tvshowAdapter = new TvShowAdapter(tvshowResults);
                         rv_tvshow.setAdapter(tvshowAdapter);
+                        hideLoading();
                     }
                 }else{
                     if(response.body() !=null){
-                        Log.e("Main Activity", "onFailure: "+ response.message());
+                        showAlert();
                     }
                 }
             }
             @Override
             public void onFailure(Call<TvShowResponse> call, Throwable t) {
-//                tv_alert.setVisibility(View.VISIBLE);
+                tv_alert.setVisibility(View.VISIBLE);
             }
         });
+    }
+    public void showAlert() {
+        progressBar.setVisibility(View.GONE);
+        tv_alert.setVisibility(View.VISIBLE);
+        rv_tvshow.setVisibility(View.GONE);
+    }
+
+    public void hideLoading() {
+        progressBar.setVisibility(View.INVISIBLE);
+        tv_alert.setVisibility(View.INVISIBLE);
+        rv_tvshow.setVisibility(View.VISIBLE);
+    }
+
+    public void showLoading() {
+        progressBar.setVisibility(View.VISIBLE);
+        tv_alert.setVisibility(View.GONE);
+        rv_tvshow.setVisibility(View.GONE);
+
     }
 }

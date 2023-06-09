@@ -1,5 +1,6 @@
 package com.example.h071211048_finalmobile.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.h071211048_finalmobile.DetailDataMovie;
 import com.example.h071211048_finalmobile.R;
 import com.example.h071211048_finalmobile.adapter.MovieAdapter;
 import com.example.h071211048_finalmobile.model.MovieResponse;
@@ -32,6 +34,7 @@ public class MoviesFragment extends Fragment {
     private RecyclerView rv_movies;
     private TextView tv_alert;
     private ProgressBar progressBar;
+    private MovieAdapter movieAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,6 +54,21 @@ public class MoviesFragment extends Fragment {
         tv_alert = view.findViewById(R.id.tv_alert);
         progressBar = view.findViewById(R.id.progress_bar);
 
+        movieAdapter = new MovieAdapter();
+        movieAdapter.setOnSelectData(new MovieAdapter.onSelectData() {
+            @Override
+            public void onSelect(MovieResult movieResult) {
+                Intent intent = new Intent(getActivity(), DetailDataMovie.class);
+//                Bundle bundle = new Bundle();
+                intent.putExtra("DetailMovie", movieResult);
+//                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+
+        rv_movies.setAdapter(movieAdapter);
+
+
         consumeAPI();
 
     }
@@ -65,6 +83,7 @@ public class MoviesFragment extends Fragment {
                     if (response != null) {
                         List<MovieResult> movie = response.body().getResults();
                         MovieAdapter moviesAdapter = new MovieAdapter(movie);
+
                         rv_movies.setAdapter(moviesAdapter);
                         hideLoading();
                     }
