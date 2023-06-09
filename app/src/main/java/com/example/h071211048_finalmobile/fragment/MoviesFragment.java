@@ -1,64 +1,101 @@
-package com.example.h071211048_finalmobile;
+package com.example.h071211048_finalmobile.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MoviesFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.example.h071211048_finalmobile.R;
+import com.example.h071211048_finalmobile.adapter.MovieAdapter;
+import com.example.h071211048_finalmobile.model.MovieResponse;
+import com.example.h071211048_finalmobile.model.MovieResult;
+import com.example.h071211048_finalmobile.networking.ApiConfig;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MoviesFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public MoviesFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MoviesFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MoviesFragment newInstance(String param1, String param2) {
-        MoviesFragment fragment = new MoviesFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    private RecyclerView rv_movies;
+    private TextView tv_alert;
+    private ProgressBar progressBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_movies, container, false);
+        View view = inflater.inflate(R.layout.fragment_movies, container, false);
+        getActivity().setTitle("Movies");
+        return view;
+
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
+        super.onViewCreated(view, savedInstanceState);
+
+        rv_movies = view.findViewById(R.id.rv_movie);
+        rv_movies.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        tv_alert = view.findViewById(R.id.tv_alert);
+        progressBar = view.findViewById(R.id.progress_bar);
+
+        consumeAPI();
+
+    }
+
+    public void consumeAPI() {
+        showLoading();
+        Call<MovieResponse> client = ApiConfig.getApiService().getMovie("popular", "b784846a95277f1dc4106ff2519fe987", "en-US", 1);
+        client.enqueue(new Callback<MovieResponse>() {
+            @Override
+            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+                if (response.isSuccessful()){
+                    if (response != null) {
+                        List<MovieResult> movie = response.body().getResults();
+                        MovieAdapter moviesAdapter = new MovieAdapter(movie);
+                        rv_movies.setAdapter(moviesAdapter);
+                        hideLoading();
+                    }
+                }else{
+                    if(response.body() !=null){
+                        Log.e("Main Activity", "onFailure: "+ response.message());
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<MovieResponse> call, Throwable t) {
+                showAlert();
+            }
+        });
+    }
+    public void showAlert() {
+        progressBar.setVisibility(View.GONE);
+        tv_alert.setVisibility(View.VISIBLE);
+        rv_movies.setVisibility(View.GONE);
+    }
+
+    public void hideLoading() {
+        progressBar.setVisibility(View.INVISIBLE);
+        tv_alert.setVisibility(View.INVISIBLE);
+        rv_movies.setVisibility(View.VISIBLE);
+    }
+
+    public void showLoading() {
+        progressBar.setVisibility(View.VISIBLE);
+        tv_alert.setVisibility(View.GONE);
+        rv_movies.setVisibility(View.GONE);
+
     }
 }
