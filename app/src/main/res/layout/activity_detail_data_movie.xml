@@ -23,11 +23,13 @@
         android:layout_alignTop="@id/iv_backdropimg">
 
         <ImageView
+            android:id="@+id/back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/baseline_arrow_back_24"
             android:padding="4dp"
-            android:background="#CCCCCC"/>
+            android:background="#CCCCCC"
+            android:onClick="back"/>
 
     </androidx.cardview.widget.CardView>
 
@@ -40,6 +42,7 @@
         android:layout_alignEnd="@id/iv_backdropimg">
 
         <ImageView
+            android:id="@+id/addToFav"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/baseline_favorite_border_24"
@@ -58,6 +61,7 @@
         android:layout_alignParentTop="true">
 
         <ImageView
+            android:id="@+id/iv_poster"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@mipmap/ic_launcher"
@@ -88,14 +92,16 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="title"/>
 
                 <TextView
+                    android:id="@+id/tv_releaseDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="year"/>
+                    android:text="-"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -109,6 +115,7 @@
                         android:src="@drawable/baseline_star_24"/>
 
                     <TextView
+                        android:id="@+id/tv_rating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="6.1"/>
