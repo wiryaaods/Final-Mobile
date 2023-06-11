@@ -14,10 +14,7 @@
         android:theme="@style/Theme.H071211048FinalMobile"
         tools:targetApi="31">
         <activity
-            android:name=".DetailDataTvShow"
-            android:exported="false" />
-        <activity
-            android:name=".DetailDataMovie"
+            android:name=".DetailData"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

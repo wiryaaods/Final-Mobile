@@ -1,5 +1,6 @@
 package com.example.h071211048_finalmobile.adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.h071211048_finalmobile.DetailData;
 import com.example.h071211048_finalmobile.R;
 import com.example.h071211048_finalmobile.model.TvShowResult;
 
@@ -59,6 +61,14 @@ public class TvShowAdapter extends RecyclerView.Adapter<TvShowAdapter.ViewHolder
                     .load("https://image.tmdb.org/t/p/w185" + tvShowResult.getPosterPath()).into(poster);
             title.setText(tvShowResult.getName());
             year.setText(yearr);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(itemView.getContext(), DetailData.class);
+                    intent.putExtra(DetailData.EXTRA_TVSHOW, tvShowResult);
+                    itemView.getContext().startActivity(intent);
+                }
+            });
         }
     }
 }
