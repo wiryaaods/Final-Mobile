@@ -10,7 +10,7 @@
         android:id="@+id/itemLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#395D8B">
+        android:background="#3F83B6">
 
         <ImageView
             android:id="@+id/iv_poster"

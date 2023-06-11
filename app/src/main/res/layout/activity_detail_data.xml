@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".DetailData"
-    android:background="#CCCCCC">
+    android:background="#E1E1E1">
 
     <ImageView
         android:id="@+id/iv_backdropimg"
@@ -97,7 +97,9 @@
                     android:id="@+id/tv_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="title"/>
+                    android:text="title"
+                    android:textStyle="bold"
+                    android:textSize="16sp"/>
 
                 <TextView
                     android:id="@+id/tv_releaseDate"
@@ -120,7 +122,8 @@
                         android:id="@+id/tv_rating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="6.1"/>
+                        android:text="6.1"
+                        android:layout_marginTop="2dp"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"

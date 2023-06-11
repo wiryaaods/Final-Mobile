@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.h071211048_finalmobile.localData.DatabaseHelper;
 import com.example.h071211048_finalmobile.model.MovieResult;
 import com.example.h071211048_finalmobile.model.TvShowResult;
 
@@ -27,6 +29,7 @@ public class DetailData extends AppCompatActivity {
     private  TvShowResult tvShowResult;
     String title, poster, backdropImg, releaseDate,  synopsis;
     Double rating;
+    private boolean isFavorite = false;
 
 
     @Override
@@ -42,6 +45,7 @@ public class DetailData extends AppCompatActivity {
         tv_rating = findViewById(R.id.tv_rating);
         tv_synopsis = findViewById(R.id.tv_synopsis);
         iv_logo = findViewById(R.id.iv_logo);
+        btn_addToFav = findViewById(R.id.addToFav);
 
         Intent intent = getIntent();
             if (intent.hasExtra(EXTRA_MOVIE)) {
@@ -85,9 +89,32 @@ public class DetailData extends AppCompatActivity {
                 tv_synopsis.setText(synopsis);
                 iv_logo.setImageResource(R.drawable.baseline_tv_24);
             }
-        }
 
-
+        btn_addToFav.setOnClickListener(new View.OnClickListener() {
+            @Override
+                public void onClick(View view) {
+                DatabaseHelper DB = new DatabaseHelper(DetailData.this);
+                    if (isFavorite) {
+                        if (movieResult != null) {
+                            Toast.makeText(DetailData.this,  movieResult.getOriginalTitle() + " removed from favorites successfully", Toast.LENGTH_SHORT).show();
+                        } else if (tvShowResult != null) {
+                            Toast.makeText(DetailData.this, tvShowResult.getName() + " removed from favorites successfully", Toast.LENGTH_SHORT).show();
+                        }
+                        btn_addToFav.setImageResource(R.drawable.baseline_favorite_border_24);
+                        isFavorite = false;
+                    } else {
+                        if (movieResult != null) {
+                            DB.AddData(title, poster, backdropImg, synopsis, releaseDate, (String.valueOf(rating)));
+                            Toast.makeText(DetailData.this,  movieResult.getOriginalTitle() + " added to favorites successfully", Toast.LENGTH_SHORT).show();
+                        } else if (tvShowResult != null) {
+                            Toast.makeText(DetailData.this, tvShowResult.getName() + " added to favorites successfully", Toast.LENGTH_SHORT).show();
+                        }
+                        btn_addToFav.setImageResource(R.drawable.baseline_favorite_24);
+                        isFavorite = true;
+                    }
+                }
+            });
+    }
 
     private String formatDate(String inputDate) {
         SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);

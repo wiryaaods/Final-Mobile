@@ -11,14 +11,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/fragment"
-        android:background="#FFFFFF">
+        android:background="#E1E1E1">
 
         <FrameLayout
             android:id="@+id/frame_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
+
     </ScrollView>
+
 
     <LinearLayout
         android:id="@+id/fragment"
@@ -26,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
-        android:background="#CCCCCC"
+        android:background="#3F83B6"
         android:padding="2dp">
 
         <LinearLayout

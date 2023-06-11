@@ -22,13 +22,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
     private List<MovieResult> movie;
 
-    private Context context;
-
     public MovieAdapter(List<MovieResult> movie) {
 
         this.movie = movie;
     }
-
 
     @NonNull
     @Override

@@ -67,13 +67,13 @@ public class TvShowFragment extends Fragment {
                     }
                 }else{
                     if(response.body() !=null){
-                        showAlert();
+                        Log.e("Main Activity", "onFailure: "+ response.message());
                     }
                 }
             }
             @Override
             public void onFailure(Call<TvShowResponse> call, Throwable t) {
-                tv_alert.setVisibility(View.VISIBLE);
+                showAlert();
             }
         });
     }

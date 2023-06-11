@@ -56,7 +56,10 @@ public class MovieResult implements Parcelable {
     private Integer voteCount;
     private final static long serialVersionUID = 4413737257470429717L;
 
-    protected MovieResult(Parcel in) {
+    public MovieResult() {
+        // Initialize any necessary fields or perform any required setup
+    }
+    public MovieResult(Parcel in) {
         byte tmpAdult = in.readByte();
         adult = tmpAdult == 0 ? null : tmpAdult == 1;
         backdropPath = in.readString();
